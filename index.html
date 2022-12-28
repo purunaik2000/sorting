@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting</title>
+    <style>
+        body {
+            background-color: blueviolet;
+            font: 1em sans-serif;
+        }
+
+        .container{
+            width: 800px;
+            margin: auto;
+        }
+
+        .inner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 800px;
+            height: 400px;
+            background-color: pink;
+            margin: auto;
+            border-radius: 5px;
+            /* visibility: hidden; */
+        }
+
+        h1{
+            height: 50px;
+        }
+
+        form {
+            width: 600px;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #Entry {
+            width: 500px;
+            height: 50px;
+            font-weight: bold;
+            font-size: x-large;
+            word-wrap: break-word;
+            border-radius: 5px;
+        }
+
+        .button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            width: 500px;
+        }
+
+        .button>input {
+            height: 50px;
+            width: 200px;
+            font-weight: bold;
+            font-size: x-large;
+            border-radius: 5px;
+        }
+
+        .button>input:hover {
+            background-color: rgb(225, 225, 225);
+        }
+
+        #ani{
+            justify-self: end;
+        }
+
+        /* Animation Box CSS */
+
+        .animetion-container{
+            height: 300px;
+            width: 800px;
+            background-color: pink;
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .box-container{
+            width: 800px;
+            height: 100px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .animetion-container>form{
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .animetion-container>form>input{
+            height: 30px;
+            width: 60px;
+        }
+
+        .box{
+            background-color: white;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 36px;
+            border-radius: 5px;
+        }
+
+        /* #box1{
+            background-color: rgb(110, 154, 249);
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner-container">
+            <h1>Enter space separeted elements to Sort</h1>
+            <form action="#" autocomplete="off">
+                <input type="text" name="EntryBox" id="Entry" title="EntryBox">
+                <div class="button">
+                    <input type="button" value="Numeric" onclick="sortNumber(this.form)">
+                    <input type="button" value="Lexico" onclick="sortString(this.form)">
+                </div>
+                <input type="button" onclick="show(form)" value="Show Animation" name="ani" id="ani">
+            </form>
+        </div>
+
+        <div class="animetion-container">
+            <div class="box-container">
+                <div id="box1" class="box"></div>
+                <div id="box2" class="box"></div>
+                <div id="box3" class="box"></div>
+                <div id="box4" class="box"></div>
+                <div id="box5" class="box"></div>
+                <div id="box6" class="box"></div>
+                <div id="box7" class="box"></div>
+                <div id="box8" class="box"></div>
+                <div id="box9" class="box"></div>
+                <div id="box10" class="box"></div>
+            </div>
+
+            <form action="#">
+                <input type="button" name="start" onclick="startAnimation(this.form)" value="Start">
+            </form>
+
+            <div class="box-container">
+                <div id="box11" class="box"></div>
+                <div id="box12" class="box"></div>
+                <div id="box13" class="box"></div>
+                <div id="box14" class="box"></div>
+                <div id="box15" class="box"></div>
+                <div id="box16" class="box"></div>
+                <div id="box17" class="box"></div>
+                <div id="box18" class="box"></div>
+                <div id="box19" class="box"></div>
+                <div id="box20" class="box"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // For removing Extra Space from the input
+        function removeSpace(inp) {
+            let n = inp.length
+            let s = ""
+            let arr = []
+            for (let i = 0; i < n; i++) {
+                if (inp.charAt(i) !== " ") {
+                    while (i < n) {
+                        if (inp.charAt(i) === " ") break
+                        s += inp[i]
+                        i++
+                    }
+                    arr.push(s)
+                    s = ""
+                }
+            }
+            return arr
+        }
+
+        // For Numerical Sorting
+        function sortNumber(myForm) {
+            let arr = removeSpace(myForm.EntryBox.value).map(Number)
+            for (let i = 0; i < arr.length; i++) {
+                if (isNaN(arr[i])) {
+                    window.alert("Enter a valid Input")
+                    myForm.EntryBox.value = ""
+                    return
+                }
+            }
+            for (let i = 0; i < arr.length - 1; i++) {
+                let min = i
+                for (let j = i + 1; j < arr.length; j++) {
+                    if (arr[j] < arr[min]) {
+                        min = j
+                    }
+                }
+                let temp = arr[min]
+                arr[min] = arr[i]
+                arr[i] = temp
+            }
+            myForm.EntryBox.value = arr.join(" ")
+        }
+
+        // For Lexicographic Sorting
+        function sortString(myForm) {
+            let arr = removeSpace(myForm.EntryBox.value)
+            let newArr = arr.sort();
+            myForm.EntryBox.value = arr.join(" ")
+        }
+
+        // Show Hide Animation Box
+        function show(myForm) {
+            if (myForm.ani.value==="Show Animation") {
+                myForm.ani.value = "Hide Animation"
+                document.getElementsByClassName("animetion-container")[0].style.visibility="visible"
+            }
+            else{
+                myForm.ani.value = "Show Animation"
+                document.getElementsByClassName("animetion-container")[0].style.visibility="hidden"
+            }
+        }
+
+        // wait
+        // function waitFor(ms) {
+        //     return new Promise(resolve => {
+        //         setTimeout(resolve(''),ms)
+        //     })
+            
+        // }
+
+
+        function swap(a,b,arr){
+            let temp = arr[a]
+            arr[a] = arr[b]
+            arr[b] = temp
+        }
+
+        var a = 1
+        var b = 0
+        var arr
+        var mode = false
+        function startAnimation(myForm2) {
+            if(document.getElementById("Entry").value===""){
+                alert("insert valid input")
+                return
+            }
+            if (myForm2.start.value==="Start") {
+                arr = removeSpace(document.getElementById("Entry").value).map(Number)
+                for (let i = 0; i < arr.length; i++) {
+                    document.getElementById("box"+(i+1)).innerHTML=arr[i]
+                }
+                myForm2.start.value="Next"
+                b=arr.length-1
+                return
+            }
+
+            if(myForm2.start.value==="clear"){
+                for (let i = 1; i <= arr.length; i++) {
+                    document.getElementById("box"+i).innerHTML=""
+                    document.getElementById("box"+i).style.backgroundColor="white"
+                }
+                document.getElementById("Entry").value=""
+                a=1
+                b=0
+                mode = false
+                myForm2.start.value="Start"
+                return
+            }
+
+            if(mode === true){
+                alert("Your Array got Sorted")
+                myForm2.start.value="clear"
+                return
+            }
+
+            if(a===arr.length){
+                document.getElementById("box"+a).style.backgroundColor="green"
+                mode = true
+                return
+            }
+
+            if(b-a+1===0){
+                document.getElementById("box"+a).style.backgroundColor="green"
+                a++
+                b=arr.length-1
+                return
+            }
+
+            if (document.getElementById("box"+b).style.backgroundColor==="red") {
+                document.getElementById("box"+(b+1)).style.backgroundColor="white"
+                document.getElementById("box"+(b)).style.backgroundColor="white"
+
+                swap(b,b-1,arr)
+                for (let i = 0; i < arr.length; i++) {
+                    document.getElementById("box"+(i+1)).innerHTML=arr[i]
+                }
+                b--
+                return
+            }
+
+            if (document.getElementById("box"+b).style.backgroundColor==="blue") {
+                document.getElementById("box"+(b+1)).style.backgroundColor="white"
+                document.getElementById("box"+(b)).style.backgroundColor="white"
+                b--
+                return
+            }
+
+            if(myForm2.start.value==="Next"){
+                if (arr[b]>=arr[b-1]) {
+                    document.getElementById("box"+(b+1)).style.backgroundColor="blue"
+                    document.getElementById("box"+(b)).style.backgroundColor="blue"
+                }
+                else {
+                    document.getElementById("box"+(b+1)).style.backgroundColor="red"
+                    document.getElementById("box"+(b)).style.backgroundColor="red"
+                }
+            }
+
+            // for (let i = 0; i < arr.length - 1; i++) {
+            //     let min = i
+            //     for (let j = i + 1; j < arr.length; j++) {
+            //         // await waitFor(1000)
+            //         // document.getElementById("box"+(min+1)).style.backgroundColor="grey"
+            //         if (arr[j] < arr[min]) {
+            //             min = j
+            //         }
+            //     }
+            //     let temp = arr[min]
+            //     arr[min] = arr[i]
+            //     arr[i] = temp
+            // }
+        }
+    </script>
+</body>
+
+</html>
